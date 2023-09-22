@@ -4,7 +4,7 @@ import * as id3 from 'id3js';
 import { Play, SkipForward, SkipBack, Pause, Headphones } from "@phosphor-icons/react";
 const Musy = () => {
   let l = ""
-  if (process.ENV.NEXT_PUBLIC_ENVIRONMENT === "prod") {
+  if (process.env.NEXT_PUBLIC_ENVIRONMENT === "prod") {
     l = "https://kinbenpro.vercel.app"
   } else {
     l = "http://localhost:3000"
