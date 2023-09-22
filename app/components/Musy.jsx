@@ -9,20 +9,26 @@ const Musy = () => {
   } else {
     l = "http://localhost:3000"
   }
-  const tracks = ["m", "mw"]
+  let tracks = []
+  for (let i = 1; i <= 25; i++) {
+    if (i < 10) {
+      tracks.push(`m0${i}`)
+    } else {
+      tracks.push(`m${i}`)
+    }
+  }
   const [track, setTrack] = useState(0)
   const [metadata, setMetadata] = useState({})
   const [open, setOpen] = useState(false)
   const [play, setPlay] = useState(false)
+  const [volume, setVolume] = useState(1)
   const [timeInfo, setTimeInfo] = useState({
     current: 0,
     max: 0
   })
   const audioRef = useRef();
   useEffect(() => {
-    id3.fromUrl(`${l}/${tracks[track]}.mp3`).then((tags) => {
-      setMetadata(tags)
-    });
+    id3.fromUrl(`${l}/${tracks[track]}.mp3`).then((tags) => setMetadata(tags)).catch(err => console.log(""));
   }, [track])
 
   const nextTrack = async () => {
@@ -72,10 +78,16 @@ const Musy = () => {
     const { currentTime, duration } = e.target
     setTimeInfo({ current: currentTime, max: duration })
   }
+
+  const volumeHandler = (e) => {
+    const { value } = e.target
+    setVolume(value)
+    audioRef.current.volume = value / 100
+  }
   return <div className="musy absolute bottom-[1rem] right-[1rem]">
     <audio autoPlay onTimeUpdate={songTimeHandler} onEnded={async () => await nextTrack()} onLoadedMetadata={songTimeHandler} ref={audioRef} src={`${l}/${tracks[track]}.mp3`}>
     </audio>
-    {open && <div className="musicplayer absolute bottom-[3.9rem] flex justify-between flex-col rounded-lg -right-[1rem] z-[123123] md:right-0 h-[20rem] w-screen p-4 md:w-[28rem]" style={{ background: 'linear-gradient(to bottom right, #000000dd, #000000aa), url("./musicpic.png")', backgroundPosition: "top" }}>
+    <div className={`musicplayer ${open ? 'translate-x-[32rem]  sm:translate-x-[100rem]' : 'translate-x-[0rem] sm:translate-x-[0rem]'} absolute bottom-[3.9rem] flex justify-between flex-col rounded-lg -right-[1rem] z-[123123] md:right-0 h-[20rem] transition-all w-screen p-4 md:w-[28rem] bg-contain`} style={{ background: 'linear-gradient(to bottom right, #000000dd, #000000aa), url("./musicpic.png")', backgroundPosition: "top" }}>
       <div className="flex-col flex ">
         <p className="text-xl">{metadata.title}</p>
         <p className="text-lg">{metadata.artist}</p>
@@ -87,10 +99,10 @@ const Musy = () => {
           {!play ? <Play className="cursor-pointer" onClick={playPause} size={24} weight="fill" /> :
             <Pause className="cursor-pointer" onClick={playPause} size={24} weight="fill" />}
           <SkipForward className="cursor-pointer" onClick={nextTrack} size={22} weight="fill" />
+          <input type="range" min={1} max={100} value={volume} className="range range-success range-xs w-[8rem]" onChange={volumeHandler} />
         </div>
       </div>
     </div>
-    }
     <div onClick={() => setOpen(!open)} className="container py-3 px-8 rounded-lg cursor-pointer flex gap-4 items-center" style={{ background: 'url("./musicpic.png")', backgroundPosition: "top" }}>
       <Headphones size={24} weight="fill" /> <span> {metadata.title} </span>
     </div>
