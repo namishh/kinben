@@ -99,7 +99,7 @@ const Musy = () => {
           {!play ? <Play className="cursor-pointer" onClick={playPause} size={24} weight="fill" /> :
             <Pause className="cursor-pointer" onClick={playPause} size={24} weight="fill" />}
           <SkipForward className="cursor-pointer" onClick={nextTrack} size={22} weight="fill" />
-          <input type="range" min={1} max={100} value={1} className="range range-xs range-success w-[6rem]" onChange={volumeHandler} />
+          <input type="range" min={1} max={100} value={100} className="range range-xs range-success w-[6rem]" onChange={volumeHandler} />
         </div>
       </div>
     </div>
