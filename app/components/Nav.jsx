@@ -36,13 +36,12 @@ const Nav = () => {
     const d = async () => {
       if (user != null) {
         const dataa = user.providerData[0]
-        console.log(user)
         const col = collection(db, 'users')
         const a = await getDocs(col)
         const b = a.docs.map(doc => ({ data: doc.data() }))
         const exists = b.find(c => c.data.email === dataa.email)
         if (!exists) {
-          setDoc(doc(db, 'users', (dataa.email)), { email: dataa.email, timer: 20, todos: [], breakTime: 5 }).then(a => console.log(a))
+          setDoc(doc(db, 'users', (dataa.email)), { email: dataa.email, timer: 20, todos: [], breakTime: 5 }).then(a => console.log("ok"))
           setData({ email: dataa.email, timer: 20, todos: [], breakTime: 5 })
         } else {
           setData({ email: exists.email, timer: exists.timer, todos: exists.todos, streak: exists.streak, breakTime: exists.breakTime })

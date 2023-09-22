@@ -21,7 +21,6 @@ const Musy = () => {
   const audioRef = useRef();
   useEffect(() => {
     id3.fromUrl(`${l}/${tracks[track]}.mp3`).then((tags) => {
-      console.log(tags)
       setMetadata(tags)
     });
   }, [track])
@@ -34,7 +33,6 @@ const Musy = () => {
         setTrack(track + 1)
       }
       await audioRef.current.load();
-      console.log(audioRef.current.src)
       await audioRef.current.play()
       setPlay(true)
     } catch (err) {
@@ -50,7 +48,6 @@ const Musy = () => {
         setTrack(track - 1)
       }
       await audioRef.current.load();
-      console.log(audioRef.current.src)
       await audioRef.current.play()
       setPlay(true)
     } catch (err) { }
