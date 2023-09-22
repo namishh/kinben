@@ -8,16 +8,8 @@ import { useDataContext } from "../context/DataContext";
 import Link from "next/link";
 const Nav = () => {
   const { data, setData } = useDataContext()
-  const { user, ghSignIn, logOut } = UserAuth();
+  const { user, logOut } = UserAuth();
   const [loading, setLoading] = useState(true);
-
-  const handleSignIn = async () => {
-    try {
-      await ghSignIn();
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const handleSignOut = async () => {
     try {
@@ -34,17 +26,17 @@ const Nav = () => {
     };
     checkAuthentication();
     const d = async () => {
-      if (user != null) {
+      if (user) {
         const dataa = user.providerData[0]
         const col = collection(db, 'users')
         const a = await getDocs(col)
         const b = a.docs.map(doc => ({ data: doc.data() }))
-        const exists = b.find(c => c.data.email === dataa.email)
+        let exists = b.find(c => c.data.email === dataa.email).data
         if (!exists) {
-          setDoc(doc(db, 'users', (dataa.email)), { email: dataa.email, timer: 20, todos: [], breakTime: 5 }).then(a => console.log("ok"))
-          setData({ email: dataa.email, timer: 20, todos: [], breakTime: 5 })
+          setDoc(doc(db, 'users', (dataa.email)), { email: dataa.email, timer: 20, todos: [], breakTime: 5, longBreakTime: 15 }).then(a => console.log("ok"))
+          setData({ email: dataa.email, timer: 20, todos: [], breakTime: 5, longBreakTime: 15 })
         } else {
-          setData({ email: exists.email, timer: exists.timer, todos: exists.todos, streak: exists.streak, breakTime: exists.breakTime })
+          setData({ email: exists.email, timer: exists.timer, todos: exists.todos, breakTime: exists.breakTime, longBreakTime: exists.longBreakTime })
         }
       }
     }

@@ -15,13 +15,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${dosis.className} overflow-x-hidden`}>
-        <AuthContextProvider>
-          <DataProvider>
+        <DataProvider>
+          <AuthContextProvider>
             <Nav />
             <Musy />
             {children}
-          </DataProvider>
-        </AuthContextProvider>
+          </AuthContextProvider>
+        </DataProvider>
       </body>
     </html>
   )

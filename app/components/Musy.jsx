@@ -19,7 +19,7 @@ const Musy = () => {
   }
   const [track, setTrack] = useState(0)
   const [metadata, setMetadata] = useState({})
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(true)
   const [play, setPlay] = useState(false)
   const [volume, setVolume] = useState(1)
   const [timeInfo, setTimeInfo] = useState({
@@ -99,7 +99,7 @@ const Musy = () => {
           {!play ? <Play className="cursor-pointer" onClick={playPause} size={24} weight="fill" /> :
             <Pause className="cursor-pointer" onClick={playPause} size={24} weight="fill" />}
           <SkipForward className="cursor-pointer" onClick={nextTrack} size={22} weight="fill" />
-          <input type="range" min={1} max={100} value={volume} className="range range-success range-xs w-[8rem]" onChange={volumeHandler} />
+          <input type="range" min={1} max={100} value={volume} className="range range-xs range-success w-[6rem]" onChange={volumeHandler} />
         </div>
       </div>
     </div>
