@@ -3,6 +3,12 @@ import { useEffect, useState, useRef } from "react"
 import * as id3 from 'id3js';
 import { Play, SkipForward, SkipBack, Pause, Headphones } from "@phosphor-icons/react";
 const Musy = () => {
+  let l = ""
+  if (process.ENV.NEXT_PUBLIC_ENVIRONMENT === "prod") {
+    l = "https://kinbenpro.vercel.app"
+  } else {
+    l = "http://localhost:3000"
+  }
   const tracks = ["m", "mw"]
   const [track, setTrack] = useState(0)
   const [metadata, setMetadata] = useState({})
@@ -14,14 +20,10 @@ const Musy = () => {
   })
   const audioRef = useRef();
   useEffect(() => {
-    id3.fromUrl(`http://localhost:3000/${tracks[track]}.mp3`).then((tags) => {
+    id3.fromUrl(`${l}/${tracks[track]}.mp3`).then((tags) => {
       console.log(tags)
       setMetadata(tags)
     });
-    let audio = audioRef.current
-    if (audio) {
-      audio.load()
-    }
   }, [track])
 
   const nextTrack = async () => {
@@ -35,6 +37,7 @@ const Musy = () => {
     await audioRef.current.play()
     setPlay(true)
   }
+
   const prevTrack = async () => {
     if (track === 0) {
       setTrack(tracks.length - 1)
@@ -62,12 +65,12 @@ const Musy = () => {
     setTimeInfo({ ...timeInfo, current: value })
     audioRef.current.currentTime = value;
   }
-  const songTimeHandler = (e) => {
+  const songTimeHandler = async (e) => {
     const { currentTime, duration } = e.target
     setTimeInfo({ current: currentTime, max: duration })
   }
   return <div className="musy absolute bottom-[1rem] right-[1rem]">
-    <audio onTimeUpdate={songTimeHandler} onLoadedMetadata={songTimeHandler} ref={audioRef} src={`http://localhost:3000/${tracks[track]}.mp3`}>
+    <audio autoPlay onTimeUpdate={songTimeHandler} onEnded={async () => await nextTrack()} onLoadedMetadata={songTimeHandler} ref={audioRef} src={`${l}/${tracks[track]}.mp3`}>
     </audio>
     {open && <div className="musicplayer absolute bottom-[3.9rem] flex justify-between flex-col rounded-lg -right-[1rem] z-[123123] md:right-0 h-[20rem] w-screen p-4 md:w-[28rem]" style={{ background: 'linear-gradient(to bottom right, #000000dd, #000000aa), url("./musicpic.png")', backgroundPosition: "top" }}>
       <div className="flex-col flex ">
