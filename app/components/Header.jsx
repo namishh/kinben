@@ -2,14 +2,7 @@ import { DiscordLogo, GithubLogo } from "@phosphor-icons/react"
 import Link from "next/link";
 import { UserAuth } from "../context/AuthContext"
 const Header = () => {
-  const { ghSignIn, user } = UserAuth();
-  const handleSignIn = async () => {
-    try {
-      await ghSignIn();
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { user } = UserAuth();
   return <div>
     <section className="flex relative flex-col items-center">
       <div className="absolute left-4 w-72 h-72 w-96 h-96 bg-purple-300 rounded-full opacity-10 animate-blob blur-3xl animation-delay-2000 filter blur-xl"></div>
