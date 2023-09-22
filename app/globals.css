@@ -10,3 +10,17 @@
     animation-delay: 4000ms;
   }
 }
+
+.example-thumb {
+  background: #f06595;
+  height: 1rem;
+  width: 1rem;
+  border-radius: 100px;
+}
+
+.example-track {
+  height: 1rem;
+  width: 100px;
+  border-radius: 100px;
+  background: #eee;
+}
