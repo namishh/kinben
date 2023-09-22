@@ -5,7 +5,7 @@ import { Play, SkipForward, SkipBack, Pause, Headphones } from "@phosphor-icons/
 const Musy = () => {
   let l = ""
   if (process.env.NEXT_PUBLIC_ENVIRONMENT === "prod") {
-    l = "https://kinbenpro.vercel.app"
+    l = "https://kinben.vercel.app"
   } else {
     l = "http://localhost:3000"
   }
@@ -27,27 +27,33 @@ const Musy = () => {
   }, [track])
 
   const nextTrack = async () => {
-    if (track === (tracks.length - 1)) {
-      setTrack(0)
-    } else {
-      setTrack(track + 1)
+    try {
+      if (track === (tracks.length - 1)) {
+        setTrack(0)
+      } else {
+        setTrack(track + 1)
+      }
+      await audioRef.current.load();
+      console.log(audioRef.current.src)
+      await audioRef.current.play()
+      setPlay(true)
+    } catch (err) {
+      // 
     }
-    await audioRef.current.load();
-    console.log(audioRef.current.src)
-    await audioRef.current.play()
-    setPlay(true)
   }
 
   const prevTrack = async () => {
-    if (track === 0) {
-      setTrack(tracks.length - 1)
-    } else {
-      setTrack(track - 1)
-    }
-    await audioRef.current.load();
-    console.log(audioRef.current.src)
-    await audioRef.current.play()
-    setPlay(true)
+    try {
+      if (track === 0) {
+        setTrack(tracks.length - 1)
+      } else {
+        setTrack(track - 1)
+      }
+      await audioRef.current.load();
+      console.log(audioRef.current.src)
+      await audioRef.current.play()
+      setPlay(true)
+    } catch (err) { }
   }
 
   const playPause = () => {
