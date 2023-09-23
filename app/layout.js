@@ -4,6 +4,7 @@ import Nav from './components/Nav'
 import Musy from './components/Musy';
 import { AuthContextProvider } from "./context/AuthContext";
 import { DataProvider } from './context/DataContext';
+import { PomoProvider } from './context/PomoContext';
 const dosis = Dosis({ subsets: ['latin'] })
 
 export const metadata = {
@@ -14,12 +15,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${dosis.className} overflow-x-hidden`}>
+      <body className={`${dosis.className} overflow-x-hidden flex flex-col h-screen`}>
         <DataProvider>
           <AuthContextProvider>
-            <Nav />
-            <Musy />
-            {children}
+            <PomoProvider>
+              <Nav />
+              <Musy />
+              {children}
+            </PomoProvider>
           </AuthContextProvider>
         </DataProvider>
       </body>

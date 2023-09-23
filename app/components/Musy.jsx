@@ -10,7 +10,7 @@ const Musy = () => {
     l = "http://localhost:3000"
   }
   let tracks = []
-  for (let i = 1; i <= 25; i++) {
+  for (let i = 1; i <= 2; i++) {
     if (i < 10) {
       tracks.push(`m0${i}`)
     } else {

@@ -1,91 +1,42 @@
 'use client'
 import { useEffect, useState, useRef } from "react"
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { useDataContext } from "../context/DataContext";
-import GradientSVG from "./gradient";
 import { UserAuth } from "../context/AuthContext"
 import { redirect } from "next/navigation";
+import { Pause, Play, ArrowCounterClockwise, Gear } from "@phosphor-icons/react";
+import { usePomoContext } from "../context/PomoContext";
 
 const PomoPage = () => {
-  const { data, setData } = useDataContext()
-  const [mode, setMode] = useState("break")
-  const [isPaused, setIsPaused] = useState(true);
-  const [secondsLeft, setSecondsLeft] = useState(0);
-
-  const secondsLeftRef = useRef(secondsLeft);
-  const isPausedRef = useRef(isPaused);
-  const modeRef = useRef(mode);
-
+  const { mode, setMode, isPaused, setIsPaused, secondsLeft, setSecondsLeft, secondsLeftRef, isPausedRef, modeRef, times, setTimes, minutes, seconds, totalSeconds, tick } = usePomoContext()
   const { user } = UserAuth();
-  function tick() {
-    secondsLeftRef.current--;
-    setSecondsLeft(secondsLeftRef.current);
-  }
-  console.log(data)
-  let times = { 'pomo': data.timer, 'break': data.breakTime, 'longbreak': data.longBreakTime }
   useEffect(() => {
     if (user == null) {
       redirect("/")
     }
-    secondsLeftRef.current = times[`${mode}`] * 60;
-    setSecondsLeft(secondsLeftRef.current);
+  }, [])
 
-    const interval = setInterval(() => {
-      if (isPausedRef.current) {
-        return;
-      }
-      if (secondsLeftRef.current === 0) {
-        return
-      }
 
-      tick();
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [mode])
-  const totalSeconds = times[`${mode}`] * 60;
-  const percentage = Math.round(secondsLeft / totalSeconds * 100);
-  const idCSS = "hello";
+  return <div className="w-screen flex flex-col justify-center items-center mb-32" style={{ flex: "1 1 auto" }}>
+    <div className="self-center flex flex-col jutsify-center items-center gap-3">
+      <div className="flex gap-4 justify-center">
+        <div onClick={() => { setMode("pomo"); setIsPaused(true); isPausedRef.current = true; }} className={`break px-4 sm:px-8 text-lg py-2 ${mode === 'pomo' ? 'bg-gradient-to-r from-indigo-400 to-pink-400 text-black' : "bg-[#1f1f1f]"} rounded-lg cursor-pointer`}>Focus</div>
+        <div onClick={() => { setMode("break"); setIsPaused(true); isPausedRef.current = true; }} className={`break px-4 sm:px-8 text-lg py-2 ${mode === 'break' ? 'bg-gradient-to-r from-indigo-400 to-pink-400 text-black' : "bg-[#1f1f1f]"} rounded-lg cursor-pointer`}>Break</div>
 
-  const minutes = Math.floor(secondsLeft / 60);
-  let seconds = secondsLeft % 60;
-  if (seconds < 10) seconds = '0' + seconds;
-
-  return <div className="w-screen min-h-[84vh] flex flex-col justify-center items-center">
-    <div className="self-center flex flex-col jutsify-center items-center gap-8 mb-8">
-      <div className="flex mt-2 justify-center">
-        <div onClick={() => { setMode("pomo"); setIsPaused(true); isPausedRef.current = true; }} className={`break px-6 text-lg py-2 ${mode === 'pomo' && 'bg-gradient-to-r from-blue-200 to-pink-400 text-black'} rounded-lg cursor-pointer`}>Go on a grind</div>
-        <div onClick={() => { setMode("break"); setIsPaused(true); isPausedRef.current = true; }} className={`break px-6 text-lg py-2 ${mode === 'break' && 'bg-gradient-to-r from-blue-200 to-pink-400 text-black'} rounded-lg cursor-pointer`}>On a break</div>
-
-        <div onClick={() => { setMode("longbreak"); setIsPaused(true); isPausedRef.current = true; }} className={`break px-6 text-lg py-2 ${mode === 'longbreak' && 'text-black bg-gradient-to-r from-blue-200 to-pink-400'} rounded-lg cursor-pointer`}>On a loong break</div>
+        <div onClick={() => { setMode("longbreak"); setIsPaused(true); isPausedRef.current = true; }} className={`break px-4 sm:px-8 text-lg py-2 ${mode === 'longbreak' ? 'text-black bg-gradient-to-r from-indigo-400 to-pink-400' : "bg-[#1f1f1f]"} rounded-lg cursor-pointer`}>Long Break</div>
       </div>
-      <div style={{ width: 360, height: 360 }} className="mt-4">
-        <GradientSVG />
-
-        <CircularProgressbar
-          value={percentage}
-          text={minutes + ':' + seconds}
-          styles={{
-            path: { stroke: `url(#${idCSS})`, height: "100%" },
-            trail: {
-              stroke: "#2e2e2e"
-            },
-            text: {
-              fill: '#5c7cfa',
-              fontSize: '24px',
-              fontWeight: 'bold'
-            },
-          }}
-        />
+      <div className="-z-[100]">
+        <p className="text-[10rem] m-[0] leading-0 font-extrabold">{minutes}:{seconds}</p>
       </div>
-      <div style={{ margin: '10px 0' }} className="flex gap-4">
+      <div style={{ margin: '0px 0' }} className="flex gap-5">
         {isPaused
           ?
-          <p className="cursor-pointer bg-[#1f1f1f] px-8 py-3" onClick={() => { setIsPaused(false); isPausedRef.current = false; }} >Resume Timer</p>
+          <p className="cursor-pointer bg-primary text-black p-5 rounded-full flex items-center" onClick={() => { if (mode != "none") setIsPaused(false); isPausedRef.current = false; }} ><Play size={24} weight="fill" /></p>
           :
-          <p className="cursor-pointer bg-[#1f1f1f] px-8 py-3" onClick={() => { setIsPaused(true); isPausedRef.current = true; }} >Stop Timer</p>
+          <p className="cursor-pointer bg-error text-black p-5 rounded-full flex items-center" onClick={() => { if (mode != "none") setIsPaused(true); isPausedRef.current = true; }} ><Pause size={24} weight="fill" /></p>
         }
-        <p className="cursor-pointer bg-[#1f1f1f] px-8 py-3" onClick={() => { setIsPaused(true); isPausedRef.current = true; setSecondsLeft(times[`${mode}`] * 60) }} >Restart Timer</p>
+        <p className="cursor-pointer bg-accent text-black p-5 rounded-full flex items-center" onClick={() => { setIsPaused(true); isPausedRef.current = true; setSecondsLeft(times[`${mode}`] * 60) }} ><ArrowCounterClockwise size={24} weight="bold" /></p>
+        <p className="cursor-pointer bg-[#1f1f1f] p-5 rounded-full flex items-center" onClick={() => { console.log("settings") }} ><Gear size={24} weight="fill" /></p>
       </div>
     </div>
   </div>

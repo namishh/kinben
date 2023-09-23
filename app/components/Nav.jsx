@@ -6,6 +6,8 @@ import { db } from "../firebase";
 import Image from 'next/image'
 import { useDataContext } from "../context/DataContext";
 import Link from "next/link";
+import { usePomoContext } from "../context/PomoContext";
+import { redirect } from "next/navigation";
 const Nav = () => {
   const { data, setData } = useDataContext()
   const { user, logOut } = UserAuth();
@@ -14,6 +16,7 @@ const Nav = () => {
   const handleSignOut = async () => {
     try {
       await logOut();
+      redirect("/")
     } catch (error) {
       console.log(error);
     }
@@ -45,7 +48,7 @@ const Nav = () => {
     };
   }, [user]);
 
-  return <div className="navbar bg-neutral">
+  return <div className="navbar bg-neutral" style={{ flex: "0 1 auto" }}>
     <div className="flex-1 px-4">
       {/* <a className="btn btn-ghost normal-case text-2xl">勤勉</a> */}
       <Link href={"/"}> <Image
@@ -72,7 +75,7 @@ const Nav = () => {
                 <img src={user.providerData[0].photoURL} />
               </div>
             </label>
-            <ul tabIndex="0" className="menu menu-sm dropdown-content mt-8 z-[1] p-4 text-lg shadow bg-neutral rounded-box w-64">
+            <ul tabIndex="0" className="menu menu-sm dropdown-content mt-8 z-[100000000] p-4 text-lg shadow bg-neutral rounded-box w-64">
               <li><Link href="/dash" className="p-2 px-4">Dashboard</Link></li>
               <li><Link href="/pomo" className="p-2 px-4">Pomodoro</Link></li>
               <li><Link href="/todo" className="p-2 px-4">Todo List</Link></li>
