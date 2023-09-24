@@ -14,8 +14,7 @@
     "eslint": "8.49.0",
     "eslint-config-next": "13.4.19",
     "firebase": "^10.4.0",
-    "id3js": "^2.1.1",
-    "jsmediatags": "^3.9.7",
+    "jsmediatags": "^3.8.1",
     "next": "13.4.19",
     "postcss": "8.4.30",
     "react": "18.2.0",
@@ -26,5 +25,6 @@
   },
   "devDependencies": {
     "daisyui": "^3.7.5"
-  }
+  },
+  "browser": "dist/jsmediatags.js"
 }

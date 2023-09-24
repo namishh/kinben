@@ -1,7 +1,26 @@
 'use client'
 import { useEffect, useState, useRef } from "react"
-import * as id3 from 'id3js';
 import { Play, SkipForward, SkipBack, Pause, Headphones } from "@phosphor-icons/react";
+import { toast } from "react-toastify";
+import jsmediatags from "jsmediatags"
+const getShuffledArr = arr => {
+  const newArr = arr.slice()
+  for (let i = newArr.length - 1; i > 0; i--) {
+    const rand = Math.floor(Math.random() * (i + 1));
+    [newArr[i], newArr[rand]] = [newArr[rand], newArr[i]];
+  }
+  return newArr
+};
+let tracks = []
+for (let i = 1; i <= 54; i++) {
+  if (i < 10) {
+    tracks.push(`m0${i}`)
+  } else {
+    tracks.push(`m${i}`)
+  }
+}
+tracks = getShuffledArr(tracks)
+console.log(tracks)
 const Musy = () => {
   let l = ""
   if (process.env.NEXT_PUBLIC_ENVIRONMENT === "prod") {
@@ -9,17 +28,9 @@ const Musy = () => {
   } else {
     l = "http://localhost:3000"
   }
-  let tracks = []
-  for (let i = 1; i <= 2; i++) {
-    if (i < 10) {
-      tracks.push(`m0${i}`)
-    } else {
-      tracks.push(`m${i}`)
-    }
-  }
   const [track, setTrack] = useState(0)
-  const [metadata, setMetadata] = useState({})
-  const [open, setOpen] = useState(true)
+  const [metadata, setMetadata] = useState({ tags: {} })
+  const [open, setOpen] = useState(false)
   const [play, setPlay] = useState(false)
   const [volume, setVolume] = useState(100)
   const [timeInfo, setTimeInfo] = useState({
@@ -28,7 +39,15 @@ const Musy = () => {
   })
   const audioRef = useRef();
   useEffect(() => {
-    id3.fromUrl(`${l}/${tracks[track]}.mp3`).then((tags) => setMetadata(tags)).catch(err => console.log(""));
+    jsmediatags.read(`${l}/${tracks[track]}.mp3`, {
+      onSuccess: function(tag) {
+        setMetadata(tag);
+        console.log(tag)
+      },
+      onError: function(error) {
+        toast(`Error: ${error}`);
+      }
+    });
   }, [track])
 
   const nextTrack = async () => {
@@ -59,12 +78,12 @@ const Musy = () => {
     } catch (err) { }
   }
 
-  const playPause = () => {
+  const playPause = async () => {
     if (!play) {
-      audioRef.current.play();
+      await audioRef.current.play();
       setPlay(true)
     } else {
-      audioRef.current.pause();
+      await audioRef.current.pause();
       setPlay(false)
     }
 
@@ -84,13 +103,13 @@ const Musy = () => {
     setVolume(value)
     audioRef.current.volume = value / 100
   }
-  return <div className="musy absolute bottom-[1rem] right-[1rem]">
-    <audio autoPlay onTimeUpdate={songTimeHandler} onEnded={async () => await nextTrack()} onLoadedMetadata={songTimeHandler} ref={audioRef} src={`${l}/${tracks[track]}.mp3`}>
+  return <div className="musy absolute bottom-0 sm:bottom-[1rem] w-screen sm:w-max right-0 sm:right-[1rem]">
+    <audio autoPlay onTimeUpdate={songTimeHandler} onEnded={async () => await nextTrack()} onLoadedMetadata={songTimeHandler} ref={audioRef} src={`/${tracks[track]}.mp3`}>
     </audio>
-    <div className={`musicplayer ${open ? 'translate-x-[32rem]  sm:translate-x-[100rem]' : 'translate-x-[0rem] sm:translate-x-[0rem]'} absolute bottom-[3.9rem] flex justify-between flex-col rounded-lg -right-[1rem] z-[123123] md:right-0 h-[20rem] transition-all w-screen p-4 md:w-[28rem] bg-contain`} style={{ background: 'linear-gradient(to bottom right, #000000dd, #000000aa), url("./musicpic.png")', backgroundPosition: "top" }}>
+    <div className={`musicplayer ${!open ? 'translate-x-[32rem] collapse sm:translate-x-[100rem]' : 'translate-x-[0rem] visible sm:translate-x-[0rem]'} absolute bottom-[3rem] sm:bottom-[3.9rem] flex justify-between flex-col sm:rounded-lg right-[0rem] z -[123123] sm:right-0 h-[20rem] transition-all w-screen p-4 sm:w-[28rem] bg - contain`} style={{ background: 'linear-gradient(to bottom right, #000000dd, #000000aa), url("./musicpic.png")', backgroundPosition: "top" }}>
       <div className="flex-col flex ">
-        <p className="text-xl">{metadata.title}</p>
-        <p className="text-lg">{metadata.artist}</p>
+        <p className="text-xl">{metadata.tags.title}</p>
+        <p className="text-lg">{metadata.tags.artist}</p>
       </div>
       <div className="flex flex-col">
         <input type="range" min={0} max={timeInfo.max} value={timeInfo.current} className="range range-xs mb-4 range-accent" onChange={sliderChange} />
@@ -103,8 +122,8 @@ const Musy = () => {
         </div>
       </div>
     </div>
-    <div onClick={() => setOpen(!open)} className="container py-3 px-8 rounded-lg cursor-pointer flex gap-4 items-center" style={{ background: 'url("./musicpic.png")', backgroundPosition: "top" }}>
-      <Headphones size={24} weight="fill" /> <span> {metadata.title} </span>
+    <div onClick={() => setOpen(!open)} className="container py-3 px-8  rounded-0 sm:rounded-lg cursor-pointer flex gap-4 items-center" style={{ background: 'url("./musicpic.png")', backgroundPosition: "top" }}>
+      <Headphones size={24} weight="fill" /> <span> {metadata.tags.title} </span>
     </div>
   </div >
 }

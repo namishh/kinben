@@ -48,7 +48,7 @@ const PomoPage = () => {
         <div onClick={() => { setMode("longbreak"); setIsPaused(true); isPausedRef.current = true; }} className={`break px-4 sm:px-8 text-lg py-2 ${mode === 'longbreak' ? 'text-black bg-gradient-to-r from-indigo-400 to-pink-400' : "bg-[#1f1f1f]"} rounded-lg cursor-pointer`}>Long Break</div>
       </div>
       <div className="-z-[100]">
-        <p className="text-[10rem] m-[0] leading-0 font-extrabold">{minutes}:{seconds}</p>
+        <p className="text-[8.6rem] sm:text-[10rem] m-[0] leading-0 font-extrabold">{minutes}:{seconds}</p>
       </div>
       <div style={{ margin: '0px 0' }} className="flex gap-5">
         {isPaused
