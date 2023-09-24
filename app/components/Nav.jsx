@@ -6,8 +6,8 @@ import { db } from "../firebase";
 import Image from 'next/image'
 import { useDataContext } from "../context/DataContext";
 import Link from "next/link";
-import { usePomoContext } from "../context/PomoContext";
 import { redirect } from "next/navigation";
+
 const Nav = () => {
   const { data, setData } = useDataContext()
   const { user, logOut } = UserAuth();

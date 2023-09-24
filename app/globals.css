@@ -11,16 +11,14 @@
   }
 }
 
-.example-thumb {
-  background: #f06595;
-  height: 1rem;
-  width: 1rem;
-  border-radius: 100px;
-}
-
-.example-track {
-  height: 1rem;
-  width: 100px;
-  border-radius: 100px;
-  background: #eee;
+.Toastify__toast-body {
+  font-size: 16px;
+  font-family: "Dosis";
+  padding-left: 20px;
+  line-height: 20px;
+  padding: 0px;
+  padding-top: 25px;
+  width: 100%;
+  font-weight: 400;
+  margin-left: 25px !important;
 }

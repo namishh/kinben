@@ -6,7 +6,7 @@ import { Pause, Play, ArrowCounterClockwise, Gear } from "@phosphor-icons/react"
 import { usePomoContext } from "../context/PomoContext";
 
 const PomoPage = () => {
-  const { mode, setMode, isPaused, setIsPaused, setSecondsLeft, isPausedRef, times, minutes, seconds } = usePomoContext()
+  const { mode, setMode, isPaused, setIsPaused, setSecondsLeft, isPausedRef, times, minutes, seconds, pomoTime, breakTime, longBreakTime, setPomoTime, setBreakTime, setLongBreakTime, resetTimes, setTimesPerm } = usePomoContext()
   useEffect(() => {
     const n = localStorage.getItem("user")
     if (n != "yes") {
@@ -14,6 +14,32 @@ const PomoPage = () => {
     }
   }, [])
   return <div className="w-screen flex flex-col justify-center items-center mb-32" style={{ flex: "1 1 auto" }}>
+    <dialog id="settingsmodal" className="modal modal-bottom sm:modal-middle">
+      <div className="modal-box  bg-neutral">
+        <h3 className="font-bold text-xl mb-4">Configure Your Times</h3>
+        <div className="s">
+          <p className="text-lg mb-1">Work Time : {pomoTime}</p>
+          <input type="range" min={1} max={120} value={pomoTime ? pomoTime : 1} className="range range-xs range-primary" onChange={(e) => setPomoTime(e.target.value)} />
+        </div>
+        <div className="s my-6">
+          <p className="text-lg mb-1">Break Time : {breakTime}</p>
+          <input type="range" min={1} max={60} value={breakTime ? breakTime : 1} className="range range-xs range-primary" onChange={(e) => setBreakTime(e.target.value)} />
+        </div>
+        <div className="s">
+          <p className="text-lg mb-1">Long Break Time : {longBreakTime}</p>
+          <input type="range" min={1} max={60} value={longBreakTime ? longBreakTime : 1} className="range range-xs range-primary" onChange={(e) => setLongBreakTime(e.target.value)} />
+        </div>
+        <div className="modal-action">
+          <button onClick={setTimesPerm} className="btn bg-[#1f1f1f]">Save</button>
+          <form method="dialog">
+            <button onClick={resetTimes} className="btn btn-error">Close</button>
+          </form>
+        </div>
+      </div>
+      <form method="dialog" className="modal-backdrop">
+        <button>close</button>
+      </form>
+    </dialog>
     <div className="self-center flex flex-col jutsify-center items-center gap-3">
       <div className="flex gap-4 justify-center">
         <div onClick={() => { setMode("pomo"); setIsPaused(true); isPausedRef.current = true; }} className={`break px-4 sm:px-8 text-lg py-2 ${mode === 'pomo' ? 'bg-gradient-to-r from-indigo-400 to-pink-400 text-black' : "bg-[#1f1f1f]"} rounded-lg cursor-pointer`}>Focus</div>
@@ -32,7 +58,7 @@ const PomoPage = () => {
           <p className="cursor-pointer bg-error text-black p-5 rounded-full flex items-center" onClick={() => { if (mode != "none") setIsPaused(true); isPausedRef.current = true; }} ><Pause size={24} weight="fill" /></p>
         }
         <p className="cursor-pointer bg-accent text-black p-5 rounded-full flex items-center" onClick={() => { setIsPaused(true); isPausedRef.current = true; setSecondsLeft(times[`${mode}`] * 60) }} ><ArrowCounterClockwise size={24} weight="bold" /></p>
-        <p className="cursor-pointer bg-[#1f1f1f] p-5 rounded-full flex items-center" onClick={() => { console.log("settings") }} ><Gear size={24} weight="fill" /></p>
+        <p className="cursor-pointer bg-[#1f1f1f] p-5 rounded-full flex items-center" onClick={() => document.getElementById('settingsmodal').showModal()} ><Gear size={24} weight="fill" /></p>
       </div>
     </div>
   </div>
