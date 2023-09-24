@@ -20,7 +20,6 @@ for (let i = 1; i <= 54; i++) {
   }
 }
 tracks = getShuffledArr(tracks)
-console.log(tracks)
 const Musy = () => {
   let l = ""
   if (process.env.NEXT_PUBLIC_ENVIRONMENT === "prod") {
@@ -42,7 +41,6 @@ const Musy = () => {
     jsmediatags.read(`${l}/${tracks[track]}.mp3`, {
       onSuccess: function(tag) {
         setMetadata(tag);
-        console.log(tag)
       },
       onError: function(error) {
         toast(`Error: ${error}`);
