@@ -16,6 +16,7 @@ const Nav = () => {
   const handleSignOut = async () => {
     try {
       await logOut();
+      localStorage.setItem("user", "no")
       redirect("/")
     } catch (error) {
       console.log(error);
@@ -41,6 +42,7 @@ const Nav = () => {
         } else {
           setData({ email: exists.email, timer: exists.timer, todos: exists.todos, breakTime: exists.breakTime, longBreakTime: exists.longBreakTime })
         }
+        localStorage.setItem("user", "yes")
       }
     }
     d()

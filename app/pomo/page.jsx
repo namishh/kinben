@@ -1,22 +1,18 @@
 'use client'
-import { useEffect, useState, useRef } from "react"
+import { useEffect } from "react"
 import 'react-circular-progressbar/dist/styles.css';
-import { useDataContext } from "../context/DataContext";
-import { UserAuth } from "../context/AuthContext"
 import { redirect } from "next/navigation";
 import { Pause, Play, ArrowCounterClockwise, Gear } from "@phosphor-icons/react";
 import { usePomoContext } from "../context/PomoContext";
 
 const PomoPage = () => {
-  const { mode, setMode, isPaused, setIsPaused, secondsLeft, setSecondsLeft, secondsLeftRef, isPausedRef, modeRef, times, setTimes, minutes, seconds, totalSeconds, tick } = usePomoContext()
-  const { user } = UserAuth();
+  const { mode, setMode, isPaused, setIsPaused, setSecondsLeft, isPausedRef, times, minutes, seconds } = usePomoContext()
   useEffect(() => {
-    if (user == null) {
+    const n = localStorage.getItem("user")
+    if (n != "yes") {
       redirect("/")
     }
   }, [])
-
-
   return <div className="w-screen flex flex-col justify-center items-center mb-32" style={{ flex: "1 1 auto" }}>
     <div className="self-center flex flex-col jutsify-center items-center gap-3">
       <div className="flex gap-4 justify-center">

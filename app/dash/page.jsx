@@ -1,16 +1,13 @@
 'use client'
 import { useEffect, React } from "react";
-import { UserAuth } from "../context/AuthContext"
 import { redirect } from "next/navigation";
 const DashPage = () => {
-  const { user } = UserAuth();
   useEffect(() => {
-    if (user == null) {
+    const n = localStorage.getItem("user")
+    if (n != "yes") {
       redirect("/")
     }
-    return () => {
-    };
-  }, [user]);
+  }, [])
   return <>dash</>
 }
 
