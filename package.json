@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.0.8",
     "@phosphor-icons/react": "^2.0.13",
     "autoprefixer": "10.4.15",
     "eslint": "8.49.0",

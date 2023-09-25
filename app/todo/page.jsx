@@ -8,7 +8,9 @@ const TodoPage = () => {
       redirect("/")
     }
   }, [])
-  return <>todo</>
+  return <div className="p-16">
+    todo
+  </div>
 }
 
 

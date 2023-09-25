@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useRef, createContext, useContext, } from "react"
 import { setDoc, doc } from "firebase/firestore";
 import { db } from "../firebase";
-import { useDataContext } from "./DataContext"
+import { useDataContext } from "./DataContext.js"
 import { toast } from "react-toastify"
 const PomoContext = createContext()
 
