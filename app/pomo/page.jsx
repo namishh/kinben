@@ -30,7 +30,9 @@ const PomoPage = () => {
           <input type="range" min={1} max={60} value={longBreakTime ? longBreakTime : 1} className="range range-xs range-primary" onChange={(e) => setLongBreakTime(e.target.value)} />
         </div>
         <div className="modal-action">
-          <button onClick={setTimesPerm} className="btn bg-[#1f1f1f]">Save</button>
+          <form method="dialog">
+            <button onClick={setTimesPerm} className="btn bg-[#1f1f1f]">Save</button>
+          </form>
           <form method="dialog">
             <button onClick={resetTimes} className="btn btn-error">Close</button>
           </form>

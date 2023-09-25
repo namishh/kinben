@@ -11,15 +11,6 @@ const getShuffledArr = arr => {
   }
   return newArr
 };
-let tracks = []
-for (let i = 1; i <= 54; i++) {
-  if (i < 10) {
-    tracks.push(`m0${i}`)
-  } else {
-    tracks.push(`m${i}`)
-  }
-}
-tracks = getShuffledArr(tracks)
 const Musy = () => {
   let l = ""
   if (process.env.NEXT_PUBLIC_ENVIRONMENT === "prod") {
@@ -27,7 +18,17 @@ const Musy = () => {
   } else {
     l = "http://localhost:3000"
   }
+  let songs = []
+  for (let i = 1; i <= 54; i++) {
+    if (i < 10) {
+      songs.push(`m0${i}`)
+    } else {
+      songs.push(`m${i}`)
+    }
+  }
+  const songsComp = getShuffledArr(songs)
   const [track, setTrack] = useState(0)
+  const [tracks, setTracks] = useState(songsComp)
   const [metadata, setMetadata] = useState({ tags: {} })
   const [open, setOpen] = useState(false)
   const [play, setPlay] = useState(false)

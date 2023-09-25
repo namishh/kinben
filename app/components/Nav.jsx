@@ -1,17 +1,17 @@
 'use client';
 import { UserAuth } from "../context/AuthContext"
-import { useState, useEffect, React } from "react";
+import { useEffect, React } from "react";
 import { collection, getDocs, setDoc, doc } from "firebase/firestore";
 import { db } from "../firebase";
 import Image from 'next/image'
 import { useDataContext } from "../context/DataContext";
 import Link from "next/link";
+import { toast } from "react-toastify";
 import { redirect } from "next/navigation";
 
 const Nav = () => {
-  const { data, setData } = useDataContext()
+  const { setData } = useDataContext()
   const { user, logOut } = UserAuth();
-  const [loading, setLoading] = useState(true);
   const handleClick = () => {
     const elem = document.activeElement;
     if (elem) {
@@ -29,23 +29,21 @@ const Nav = () => {
   };
 
   useEffect(() => {
-    const checkAuthentication = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 50));
-      setLoading(false);
-    };
-    checkAuthentication();
     const d = async () => {
       if (user) {
         const dataa = user.providerData[0]
         const col = collection(db, 'users')
         const a = await getDocs(col)
-        const b = a.docs.map(doc => ({ data: doc.data() }))
-        let exists = b.find(c => c.data.email === dataa.email).data
+        const b = []
+        a.docs.forEach(doc => {
+          b.push(doc.data())
+        })
+        let exists = b.find(c => c.email === dataa.email)
         if (!exists) {
-          setDoc(doc(db, 'users', (dataa.email)), { email: dataa.email, timer: 20, todos: [], breakTime: 5, longBreakTime: 15 }).then(a => console.log("ok"))
-          setData({ email: dataa.email, timer: 20, todos: [], breakTime: 5, longBreakTime: 15 })
+          setDoc(doc(db, 'users', (dataa.email)), { email: dataa.email, timer: 20, todos: [], breakTime: 5, longBreakTime: 15, cats: ["doing", "done", "to do"] }).then(_ => toast("Account Added"))
+          setData({ email: dataa.email, timer: 20, todos: [], breakTime: 5, longBreakTime: 15, cats: ["doing", "done", "to do"] })
         } else {
-          setData({ email: exists.email, timer: exists.timer, todos: exists.todos, breakTime: exists.breakTime, longBreakTime: exists.longBreakTime })
+          setData({ email: exists.email, timer: exists.timer, todos: exists.todos, breakTime: exists.breakTime, longBreakTime: exists.longBreakTime, cats: exists.cats })
         }
         localStorage.setItem("user", "yes")
       }
@@ -67,7 +65,7 @@ const Nav = () => {
     </div>
     <div className="flex-none">
       <ul className="menu menu-horizontal py-0 px-1">
-        {loading ? null : !user && (
+        {!user && (
           <ul className="flex">
             <Link href="/signin" className="p-1 px-4 text-lg bg-[#1c1c1c] rounded-lg cursor-pointer">
               Sign in            </Link>
