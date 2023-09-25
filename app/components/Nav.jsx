@@ -12,7 +12,12 @@ const Nav = () => {
   const { data, setData } = useDataContext()
   const { user, logOut } = UserAuth();
   const [loading, setLoading] = useState(true);
-
+  const handleClick = () => {
+    const elem = document.activeElement;
+    if (elem) {
+      elem?.blur();
+    }
+  };
   const handleSignOut = async () => {
     try {
       await logOut();
@@ -78,10 +83,10 @@ const Nav = () => {
               </div>
             </label>
             <ul tabIndex="0" className="menu menu-sm dropdown-content mt-8 z-[100000000] p-4 text-lg shadow bg-neutral rounded-box w-64">
-              <li><Link href="/dash" className="p-2 px-4">Dashboard</Link></li>
-              <li><Link href="/pomo" className="p-2 px-4">Pomodoro</Link></li>
-              <li><Link href="/todo" className="p-2 px-4">Todo List</Link></li>
-              <li><a onClick={handleSignOut} className="p-2 px-4">Sign Out</a></li>
+              <li><Link onClick={handleClick} href="/dash" className="p-2 px-4">Dashboard</Link></li>
+              <li><Link onClick={handleClick} href="/pomo" className="p-2 px-4">Pomodoro</Link></li>
+              <li><Link onClick={handleClick} href="/todo" className="p-2 px-4">Todo List</Link></li>
+              <li><a onClick={() => { handleClick(); handleSignOut() }} className="p-2 px-4">Sign Out</a></li>
             </ul>
           </div>
         }
