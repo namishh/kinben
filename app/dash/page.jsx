@@ -27,7 +27,7 @@ const DashPage = () => {
     if (n != "yes") {
       redirect("/")
     }
-  }, [localStorage.getItem("user")])
+  }, [])
   return <div className="p-16 flex justify-center items-center h-full w-full" style={{ flex: "1 1 auto" }}>
     <div className="dash mb-24 flex justify-center flex-col items-center gap-8">
       <div className="flex flex-col items-center gap-3">
