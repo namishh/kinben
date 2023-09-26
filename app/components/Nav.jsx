@@ -84,7 +84,7 @@ const Nav = () => {
             <ul tabIndex="0" className="menu menu-sm dropdown-content mt-8 z-[100000000] p-4 text-lg shadow bg-neutral rounded-box w-64">
               <li><Link onClick={handleClick} href="/dash" className="p-2 px-4">Dashboard</Link></li>
               <li><Link onClick={handleClick} href="/pomo" className="p-2 px-4">Pomodoro</Link></li>
-              <li><Link onClick={handleClick} href="/todo" className="p-2 px-4">Todo List</Link></li>
+              <li><Link onClick={handleClick} href="/kanban" className="p-2 px-4">Kanban</Link></li>
               <li><a onClick={() => { handleClick(); handleSignOut() }} className="p-2 px-4">Sign Out</a></li>
             </ul>
           </div>
