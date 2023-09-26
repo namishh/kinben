@@ -3,11 +3,12 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useState } from "react";
 import { useTodoContext } from "../context/TodoContext";
+import { useDataContext } from "../context/DataContext";
 
 const Taskcard = ({ task }) => {
-  const { updateTask, deleteTask, updateTitle } = useTodoContext()
+  const { data, setData } = useDataContext()
+  const { updateTask, deleteTask, updateTitle, saveTasks, tasks } = useTodoContext()
   const [mouseIsOver, setMouseIsOver] = useState(false);
-
   const {
     setNodeRef,
     attributes,
@@ -75,12 +76,12 @@ const Taskcard = ({ task }) => {
           </form>
           <div className="modal-action">
             <form method="dialog">
-              <button className="btn bg-[#1f1f1f]">Save</button>
+              <button onClick={async () => await saveTasks(data, tasks)} className="btn bg-[#1f1f1f]">Save</button>
             </form>
           </div>
         </div>
         <form method="dialog" className="modal-backdrop">
-          <button>close</button>
+          <button onClick={async () => await saveTasks(data, tasks)}>close</button>
         </form>
       </dialog>
       <div className="flex flex-col">
@@ -94,7 +95,7 @@ const Taskcard = ({ task }) => {
       {mouseIsOver && (
         <div className="stroke-white absolute right-4 flex flex-col justify-center" >
           <button
-            onClick={() => {
+            onClick={async () => {
               deleteTask(task.id);
             }}
             className="bg-[#222] p-2 rounded opacity-60 hover:opacity-100"

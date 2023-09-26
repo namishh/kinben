@@ -32,8 +32,8 @@ export default function RootLayout({ children }) {
           pauseOnHover
           theme="dark"
         />
-        <DataProvider>
-          <AuthContextProvider>
+        <AuthContextProvider>
+          <DataProvider>
             <TodoProvider>
               <PomoProvider>
                 <Nav />
@@ -41,8 +41,8 @@ export default function RootLayout({ children }) {
                 {children}
               </PomoProvider>
             </TodoProvider>
-          </AuthContextProvider>
-        </DataProvider>
+          </DataProvider>
+        </AuthContextProvider>
       </body>
     </html>
   )

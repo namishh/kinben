@@ -40,10 +40,11 @@ const Nav = () => {
         })
         let exists = b.find(c => c.email === dataa.email)
         if (!exists) {
-          setDoc(doc(db, 'users', (dataa.email)), { email: dataa.email, timer: 20, todos: [], breakTime: 5, longBreakTime: 15, cats: ["doing", "done", "to do"] }).then(_ => toast("Account Added"))
-          setData({ email: dataa.email, timer: 20, todos: [], breakTime: 5, longBreakTime: 15, cats: ["doing", "done", "to do"] })
+          setDoc(doc(db, 'users', (dataa.email)), { email: dataa.email, timer: 20, todos: [], breakTime: 5, longBreakTime: 15 }).then(_ => toast("Account Added"))
+
+          setData({ email: dataa.email, timer: 20, todos: [], breakTime: 5, longBreakTime: 15 })
         } else {
-          setData({ email: exists.email, timer: exists.timer, todos: exists.todos, breakTime: exists.breakTime, longBreakTime: exists.longBreakTime, cats: exists.cats })
+          setData({ email: exists.email, timer: exists.timer, todos: exists.todos, breakTime: exists.breakTime, longBreakTime: exists.longBreakTime })
         }
         localStorage.setItem("user", "yes")
       }

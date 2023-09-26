@@ -1,7 +1,10 @@
 'use client'
+import { setDoc, doc } from "firebase/firestore";
+import { db } from "../firebase";
 import React, { createContext, useContext, useMemo, useState, useEffect } from "react"
 import { useSensor, useSensors, PointerSensor } from "@dnd-kit/core";
 import { useDataContext } from "./DataContext"
+import { UserAuth } from "./AuthContext"
 import { arrayMove } from "@dnd-kit/sortable";
 const cols = [
   {
@@ -21,15 +24,23 @@ const TodoContext = createContext()
 // create context provider
 export const TodoProvider = ({ children }) => {
   const { data, setData } = useDataContext()
+  const { user } = UserAuth();
   const [columns, setColumns] = useState(cols)
   const columnsId = useMemo(() => columns.map(col => col.id), [columns])
   const [tasks, setTasks] = useState([])
   const [activeCol, setActiveCol] = useState(null)
   const [activeTask, setActiveTask] = useState(null)
 
+  const saveTasks = (data, tasks) => {
+    setDoc(doc(db, 'users', (data.email)), { ...data, todos: tasks })
+  }
   useEffect(() => {
-    //setTasks(data.todos)
-  }, [tasks, data])
+    if (user != undefined) {
+      console.log(data)
+      setTasks(data.todos)
+    }
+
+  }, [data])
   const generateId = () => {
     return Math.floor(Math.random() * 1000000001);
   }
@@ -50,11 +61,13 @@ export const TodoProvider = ({ children }) => {
       content: `Tasks ${tasks.length + 1}`
     }
     setTasks([...tasks, newTask])
+    saveTasks(data, [...tasks, newTask])
   }
 
   const deleteTask = id => {
     const newTasks = tasks.filter((task) => task.id !== id);
     setTasks(newTasks);
+    saveTasks(data, newTasks)
   }
 
   const updateTitle = (id, title) => {
@@ -84,6 +97,7 @@ export const TodoProvider = ({ children }) => {
   const onDragEnd = event => {
     setActiveTask(null)
   }
+
 
   const onDragOver = event => {
     console.log("ok")
@@ -122,14 +136,16 @@ export const TodoProvider = ({ children }) => {
         const activeIndex = tasks.findIndex((t) => t.id === activeId);
 
         tasks[activeIndex].columnId = overId;
+        if (columnsId != overId) saveTasks(data, tasks)
         console.log("DROPPING TASK OVER COLUMN", { activeIndex });
         return arrayMove(tasks, activeIndex, activeIndex);
       });
+
     }
   }
 
   return (
-    <TodoContext.Provider value={{ data, setData, onDragStart, onDragEnd, onDragOver, updateTask, deleteTask, createTasks, sensors, tasks, setTasks, setActiveTask, activeTask, activeCol, setActiveCol, columns, setColumns, columnsId, updateTitle }}>
+    <TodoContext.Provider value={{ data, setData, onDragStart, onDragEnd, onDragOver, updateTask, deleteTask, createTasks, sensors, tasks, setTasks, setActiveTask, activeTask, activeCol, setActiveCol, columns, setColumns, columnsId, updateTitle, saveTasks }}>
       {children}
     </TodoContext.Provider>
   )
