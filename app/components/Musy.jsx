@@ -47,7 +47,7 @@ const Musy = () => {
         toast(`Error: ${error}`);
       }
     });
-  }, [track])
+  }, [track, l])
 
   const nextTrack = async () => {
     try {
