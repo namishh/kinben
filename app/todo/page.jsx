@@ -10,6 +10,7 @@ import { SortableContext, } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import Column from "./Column";
 import Taskcard from "./Taskcard";
+const a = document.body
 const TodoPage = () => {
   const { activeTask, activeCol, sensors, onDragOver, onDragEnd, onDragStart, columnsId, columns, tasks } = useTodoContext()
   useEffect(() => {
@@ -56,7 +57,7 @@ const TodoPage = () => {
             />
           )}
         </DragOverlay>,
-        document.body
+        a
       )}
     </DndContext>
   </div>
