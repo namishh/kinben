@@ -10,14 +10,15 @@ import { SortableContext, } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import Column from "./Column";
 import Taskcard from "./Taskcard";
-const a = document.body
 const TodoPage = () => {
+  const [mounted, setMounted] = useState(false);
   const { activeTask, activeCol, sensors, onDragOver, onDragEnd, onDragStart, columnsId, columns, tasks } = useTodoContext()
   useEffect(() => {
     const n = localStorage.getItem("user")
     if (n != "yes") {
       redirect("/")
     }
+    setMounted(true)
   }, [])
   return <div className="p-16 flex justify-center min-h-content items-center" style={{ flex: "1 1 auto" }}>
     <DndContext
@@ -40,7 +41,7 @@ const TodoPage = () => {
         </div>
       </div>
 
-      {createPortal(
+      {mounted ? createPortal(
         <DragOverlay>
           {activeCol && (
             <Column
@@ -57,8 +58,8 @@ const TodoPage = () => {
             />
           )}
         </DragOverlay>,
-        a
-      )}
+        document.body
+      ) : null}
     </DndContext>
   </div>
 }

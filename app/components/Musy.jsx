@@ -102,7 +102,7 @@ const Musy = () => {
     setVolume(value)
     audioRef.current.volume = value / 100
   }
-  return <div className={`musy fixed sm:absolute bottom-0 sm:bottom-[1rem] w-screen sm:w-max right-0 sm:right-[1rem]`}>
+  return <div className={`musy z-[12312312312312313] fixed sm:absolute bottom-0 sm:bottom-[1rem] w-screen sm:w-max right-0 sm:right-[1rem]`}>
     <audio autoPlay onTimeUpdate={songTimeHandler} onEnded={async () => await nextTrack()} onLoadedMetadata={songTimeHandler} ref={audioRef} src={`/${tracks[track]}.mp3`}>
     </audio>
     <div className={`musicplayer ${!open ? 'translate-x-[32rem] collapse sm:translate-x-[100rem]' : 'translate-x-[0rem] visible sm:translate-x-[0rem]'} absolute bottom-[3rem] sm:bottom-[3.9rem] flex justify-between flex-col sm:rounded-lg right-[0rem] z -[123123] sm:right-0 h-[20rem] transition-all w-screen p-4 sm:w-[28rem] bg - contain`} style={{ background: 'linear-gradient(to bottom right, #000000dd, #000000aa), url("./musicpic.png")', backgroundPosition: "top" }}>
