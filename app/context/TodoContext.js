@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useMemo, useState, useEffect } from "react"
 import { useSensor, useSensors, PointerSensor } from "@dnd-kit/core";
 import { useDataContext } from "./DataContext"
-
+import { arrayMove } from "@dnd-kit/sortable";
 const cols = [
   {
     id: "todo",
@@ -28,7 +28,7 @@ export const TodoProvider = ({ children }) => {
   const [activeTask, setActiveTask] = useState(null)
 
   useEffect(() => {
-    setTasks(data.tasks)
+    //setTasks(data.todos)
   }, [tasks, data])
   const generateId = () => {
     return Math.floor(Math.random() * 1000000001);
@@ -46,6 +46,7 @@ export const TodoProvider = ({ children }) => {
     const newTask = {
       id: generateId(),
       columnId: id,
+      title: "Task title",
       content: `Tasks ${tasks.length + 1}`
     }
     setTasks([...tasks, newTask])
@@ -54,9 +55,16 @@ export const TodoProvider = ({ children }) => {
   const deleteTask = id => {
     const newTasks = tasks.filter((task) => task.id !== id);
     setTasks(newTasks);
-    setTimes({ 'pomo': data.timer, 'break': data.breakTime, 'longbreak': data.longBreakTime, "none": 0 })
   }
 
+  const updateTitle = (id, title) => {
+    const newTasks = tasks.map((task) => {
+      if (task.id !== id) return task;
+      return { ...task, title };
+    });
+
+    setTasks(newTasks);
+  }
   const updateTask = (id, content) => {
     const newTasks = tasks.map((task) => {
       if (task.id !== id) return task;
@@ -64,7 +72,6 @@ export const TodoProvider = ({ children }) => {
     });
 
     setTasks(newTasks);
-    setTimes({ 'pomo': data.timer, 'break': data.breakTime, 'longbreak': data.longBreakTime, "none": 0 })
   }
 
   const onDragStart = (event) => {
@@ -79,7 +86,9 @@ export const TodoProvider = ({ children }) => {
   }
 
   const onDragOver = event => {
+    console.log("ok")
     const { active, over } = event;
+    console.log(over)
     if (!over) return;
 
     const activeId = active.id;
@@ -107,7 +116,6 @@ export const TodoProvider = ({ children }) => {
     }
 
     const isOverAColumn = over.data.current?.type === "Column";
-
     // Im dropping a Task over a column
     if (isActiveATask && isOverAColumn) {
       setTasks((tasks) => {
@@ -121,7 +129,7 @@ export const TodoProvider = ({ children }) => {
   }
 
   return (
-    <TodoContext.Provider value={{ data, setData, onDragStart, onDragEnd, onDragOver, updateTask, deleteTask, createTasks, sensors, tasks, setTasks, setActiveTask, activeTask, activeCol, setActiveCol, columns, setColumns, columnsId }}>
+    <TodoContext.Provider value={{ data, setData, onDragStart, onDragEnd, onDragOver, updateTask, deleteTask, createTasks, sensors, tasks, setTasks, setActiveTask, activeTask, activeCol, setActiveCol, columns, setColumns, columnsId, updateTitle }}>
       {children}
     </TodoContext.Provider>
   )

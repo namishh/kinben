@@ -19,7 +19,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${dosis.className} overflow-x-hidden flex flex-col h-screen`}>
+      <body className={`${dosis.className} overflow-x-hidden flex flex-col min-h-screen`}>
         <ToastContainer
           position="bottom-center"
           autoClose={5000}
