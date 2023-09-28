@@ -31,7 +31,7 @@ const Header = () => {
           <a href="https://discord.com/users/715825910611443722" target="_blank" className="text-gray-400 transition duration-100 hover:text-gray-500 active:text-gray-600">
             <DiscordLogo size={22} weight="fill" />
           </a>
-          <a href="https://github.com/chadcat7/kinben" target="_blank" className="text-gray-400 transition duration-100 hover:text-gray-500 active:text-gray-600">
+          <a href="https://github.com/chadcat7" target="_blank" className="text-gray-400 transition duration-100 hover:text-gray-500 active:text-gray-600">
             <GithubLogo size={22} weight="fill" />
           </a>
         </div>
