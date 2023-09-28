@@ -6,6 +6,7 @@ import { AuthContextProvider } from "./context/AuthContext";
 import { DataProvider } from './context/DataContext';
 import { PomoProvider } from './context/PomoContext';
 import { TodoProvider } from './context/TodoContext';
+import { LinksProvider } from './context/LinksContext';
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 
@@ -36,9 +37,11 @@ export default function RootLayout({ children }) {
           <DataProvider>
             <TodoProvider>
               <PomoProvider>
-                <Nav />
-                <Musy />
-                {children}
+                <LinksProvider>
+                  <Nav />
+                  <Musy />
+                  {children}
+                </LinksProvider>
               </PomoProvider>
             </TodoProvider>
           </DataProvider>

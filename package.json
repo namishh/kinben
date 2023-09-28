@@ -17,6 +17,8 @@
     "eslint-config-next": "13.4.19",
     "firebase": "^10.4.0",
     "jsmediatags": "^3.8.1",
+    "moment": "^2.29.4",
+    "momentjs": "^2.0.0",
     "next": "13.4.19",
     "postcss": "8.4.30",
     "react": "18.2.0",
