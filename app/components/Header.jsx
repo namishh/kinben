@@ -19,7 +19,7 @@ const Header = () => {
             <Link href="/dash" className="cursor-pointer inline-block rounded-lg px-4 md:px-8 py-3 text-center text-sm font-semibold text-white outline-none transition duration-100 hover:bg-zinc-900 bg-neutral md:text-base">Continue To Dashboard</Link>
           }
 
-          <a href="#" className="inline-block rounded-lg bg-gray-200 px-8 py-3 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:bg-gray-300 focus-visible:ring active:text-gray-700 md:text-base">Contribute To Us</a>
+          <a href="https://github.com/chadcat7/kinben" className="inline-block rounded-lg bg-gray-200 px-8 py-3 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:bg-gray-300 focus-visible:ring active:text-gray-700 md:text-base">Contribute To Us</a>
         </div>
       </div>
 
@@ -28,10 +28,10 @@ const Header = () => {
         <span className="h-px w-12 bg-gray-200"></span>
 
         <div className="flex gap-4">
-          <a href="#" target="_blank" className="text-gray-400 transition duration-100 hover:text-gray-500 active:text-gray-600">
+          <a href="https://discord.com/users/715825910611443722" target="_blank" className="text-gray-400 transition duration-100 hover:text-gray-500 active:text-gray-600">
             <DiscordLogo size={22} weight="fill" />
           </a>
-          <a href="#" target="_blank" className="text-gray-400 transition duration-100 hover:text-gray-500 active:text-gray-600">
+          <a href="https://github.com/chadcat7/kinben" target="_blank" className="text-gray-400 transition duration-100 hover:text-gray-500 active:text-gray-600">
             <GithubLogo size={22} weight="fill" />
           </a>
         </div>
