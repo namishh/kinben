@@ -13,10 +13,25 @@ const SearchBar = () => {
   }, [])
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (engine === "duckduckgo") {
-      win.location.assign(`https://www.${engine}.com/${query}`)
+    if (query.startsWith("!!")) {
+      if (query.startsWith("!!r/")) {
+        let sub = query.slice(4)
+        win.location.assign(`https://www.reddit.com/r/${sub}`)
+      } else if (query.startsWith("!!gh/")) {
+        let gh = query.slice(5)
+        win.location.assign(`https://www.github.com/${gh}`)
+      } else if (query.startsWith("!!gl/")) {
+        let gh = query.slice(5)
+        win.location.assign(`https://www.gitlab.com/${gh}`)
+      }
+    } else if (query.startsWith("https://") || query.startsWith("http://")) {
+      win.location.assign(query)
     } else {
-      win.location.assign(`https://www.${engine}.com/search?q=${query}`)
+      if (engine === "duckduckgo") {
+        win.location.assign(`https://www.${engine}.com/${query}`)
+      } else {
+        win.location.assign(`https://www.${engine}.com/search?q=${query}`)
+      }
     }
   }
   return <div className="search w-full" >

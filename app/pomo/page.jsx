@@ -4,15 +4,16 @@ import 'react-circular-progressbar/dist/styles.css';
 import { redirect } from "next/navigation";
 import { Pause, Play, ArrowCounterClockwise, Gear } from "@phosphor-icons/react";
 import { usePomoContext } from "../context/PomoContext";
+import { UserAuth } from "../context/AuthContext";
 
 const PomoPage = () => {
   const { mode, setMode, isPaused, setIsPaused, setSecondsLeft, isPausedRef, times, minutes, seconds, pomoTime, breakTime, longBreakTime, setPomoTime, setBreakTime, setLongBreakTime, resetTimes, setTimesPerm } = usePomoContext()
+  const { user } = UserAuth()
   useEffect(() => {
-    const n = localStorage.getItem("user")
-    if (n != "yes") {
+    if (!user) {
       redirect("/")
     }
-  }, [])
+  }, [user])
   return <div className="w-screen flex flex-col justify-center items-center mb-32" style={{ flex: "1 1 auto" }}>
     <dialog id="settingsmodal" className="modal modal-bottom sm:modal-middle">
       <div className="modal-box  bg-neutral">

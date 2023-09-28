@@ -36,7 +36,6 @@ export const TodoProvider = ({ children }) => {
   }
   useEffect(() => {
     if (user != undefined) {
-      console.log(data)
       setTasks(data.todos)
     }
 

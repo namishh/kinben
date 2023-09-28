@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, React, useState } from "react";
 import { redirect } from "next/navigation";
+import { UserAuth } from "../context/AuthContext";
 import { useTodoContext } from "../context/TodoContext";
 import {
   DndContext,
@@ -13,13 +14,13 @@ import Taskcard from "./Taskcard";
 const TodoPage = () => {
   const [mounted, setMounted] = useState(false);
   const { activeTask, activeCol, sensors, onDragOver, onDragEnd, onDragStart, columnsId, columns, tasks } = useTodoContext()
+  const { user } = UserAuth()
   useEffect(() => {
-    const n = localStorage.getItem("user")
-    if (n != "yes") {
+    if (!user) {
       redirect("/")
     }
     setMounted(true)
-  }, [])
+  }, [user])
   return <div className="p-16 flex justify-center min-h-content items-center" style={{ flex: "1 1 auto" }}>
     <DndContext
       sensors={sensors}

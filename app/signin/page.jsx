@@ -19,7 +19,7 @@ const SignPage = () => {
     }
   };
   useEffect(() => {
-    if (user != null) {
+    if (user) {
       redirect("/dash")
     }
     return () => {
